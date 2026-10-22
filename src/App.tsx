@@ -7,13 +7,17 @@ import ToolTip from "./components/tool-tip";
 export default function App() {
 
   const [sentenceCards, setSentenceCards] = useState<SentenceCardType[]>([
-    {englishSentence: "For nothing was simply one thing.", japaneseSentence:"何一つ、ただそれだけのものではなかった。"},
-    {englishSentence: "We know what we are, but know not what we may be.", japaneseSentence:"私たちは今の自分を知っている。しかし、これから何になりうるのかは知らない。"}
+    {id: 1, englishSentence: "For nothing was simply one thing.", japaneseSentence:"何一つ、ただそれだけのものではなかった。"},
+    {id: 2, englishSentence: "We know what we are, but know not what we may be.", japaneseSentence:"私たちは今の自分を知っている。しかし、これから何になりうるのかは知らない。"}
   ]);
 
   const handleAddCard = (newCard: SentenceCardType) => {
     setSentenceCards([newCard, ...sentenceCards]); // 新しいカードを先頭に追加
   };
+
+  const handleDeleteCard = (targetCard: SentenceCardType) => {
+    setSentenceCards(sentenceCards.filter((card) => card.id !== targetCard.id))
+  }
 
   const handleEnglishSpeak = (englishText: string) => {
 
@@ -57,6 +61,7 @@ export default function App() {
                 {/*削除ボタン */}
                 <div className="relative group">
                   <button
+                    onClick={() => handleDeleteCard(card)}
                     className="mt-4 mb-1 hover:text-gray-400"
                   >
                     <Trash></Trash>
