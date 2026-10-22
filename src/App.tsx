@@ -1,8 +1,7 @@
 import { useState } from "react";
 import InputForm from "./components/input-form";
 import type { SentenceCardType } from "./components/sentence-card-type";
-import { Volume2, Trash } from "lucide-react";
-import ToolTip from "./components/tool-tip";
+import SentenceCard from "./components/sentence-card";
 
 export default function App() {
 
@@ -42,44 +41,12 @@ export default function App() {
       {/* カード一覧表示 */}
       <div className="mt-6">
         {sentenceCards.map((card, index) => (
-          <div key={index} className="bg-gray-50 m-4 p-5 border-2 border-green-600 shadow rounded-lg">
-            <div className="flex gap-4">
-
-              <div className="flex flex-col justify-between items-center">
-                {/*スピーカーボタン */}
-                <div className="relative group">
-                  <button
-                    onClick={() => handleEnglishSpeak(card.englishSentence)}
-                    className="text-green-600 p-0.5 border-2 rounded-lg hover:text-green-300"
-                  >
-                    <Volume2 className="w-5 h-5"></Volume2>
-                  </button>
-                  <ToolTip text="音声を再生"></ToolTip>
-                </div>
-
-
-                {/*削除ボタン */}
-                <div className="relative group">
-                  <button
-                    onClick={() => handleDeleteCard(card)}
-                    className="mt-4 mb-1 hover:text-gray-400"
-                  >
-                    <Trash></Trash>
-                  </button>
-                  <ToolTip text="削除"></ToolTip>
-                </div>
-
-              </div>
-
-              {/*英文＆和訳 */}
-              <div>
-                <h2 className="font-semibold text-lg">{card.englishSentence}</h2>
-                <p className="text-gray-600 text-sm mt-4">{card.japaneseSentence}</p>
-              </div>
-
-            </div>
-
-          </div>
+          <SentenceCard
+            key={index}
+            card={card}
+            onDelete={handleDeleteCard}
+            onSpeak={handleEnglishSpeak}
+          />
         ))}
       </div>
     </main>
