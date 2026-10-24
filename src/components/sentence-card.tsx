@@ -18,7 +18,7 @@ export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardPro
                 <div className="flex flex-col justify-between items-center">
                     {/*スピーカーボタン */}
                     <button
-                        onClick={() => onSpeak(card.englishSentence)}
+                        onClick={() => onSpeak(card.english_sentence)}
                         className="relative group text-green-600 p-0.5 border-2 rounded-lg hover:text-green-300"
                     >
                         <Volume2 className="w-5 h-5"></Volume2>
@@ -38,8 +38,8 @@ export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardPro
 
               {/*英文＆和訳カラム */}
               <div>
-                <h2 className="font-semibold text-lg">{card.englishSentence}</h2>
-                <p className="text-gray-600 text-sm mt-4">{card.japaneseSentence}</p>
+                <h2 className="font-semibold text-lg">{card.english_sentence}</h2>
+                <p className="text-gray-600 text-sm mt-4">{card.japanese_sentence}</p>
               </div>
             </div>
         </div>

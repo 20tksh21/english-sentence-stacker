@@ -14,9 +14,9 @@ export default function InputForm({ onAddCard }: InputFormProps) {
         if (!englishInput.trim() && !japaneseInput.trim()) return;
 
         onAddCard({
-            id: Date.now(),
-            englishSentence: englishInput,
-            japaneseSentence: japaneseInput,
+            id: crypto.randomUUID(),
+            english_sentence: englishInput,
+            japanese_sentence: japaneseInput,
         });
 
         setEnglishInput("");

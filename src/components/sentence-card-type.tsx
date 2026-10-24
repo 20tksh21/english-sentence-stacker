@@ -1,5 +1,5 @@
 export type SentenceCardType = {
-    id: number;
-    englishSentence: string;
-    japaneseSentence: string;
+    id: string;
+    english_sentence: string;
+    japanese_sentence: string;
 }

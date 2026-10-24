@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "./lib/supabase";
 import InputForm from "./components/input-form";
 import type { SentenceCardType } from "./components/sentence-card-type";
 import SentenceCard from "./components/sentence-card";
@@ -6,12 +7,29 @@ import SentenceCard from "./components/sentence-card";
 export default function App() {
 
   const [sentenceCards, setSentenceCards] = useState<SentenceCardType[]>([
-    {id: 1, englishSentence: "For nothing was simply one thing.", japaneseSentence:"何一つ、ただそれだけのものではなかった。"},
-    {id: 2, englishSentence: "We know what we are, but know not what we may be.", japaneseSentence:"私たちは今の自分を知っている。しかし、これから何になりうるのかは知らない。"}
   ]);
 
-  const handleAddCard = (newCard: SentenceCardType) => {
-    setSentenceCards([newCard, ...sentenceCards]); // 新しいカードを先頭に追加
+  useEffect(() => {
+    async function fetchData() {
+      const { data, error } = await supabase.from('sentence-card').select('*')
+      
+      if (error) {
+        console.error('データ取得エラー:', error)
+      } else {
+        setSentenceCards(data || [])
+      }
+    }
+    fetchData()
+  }, [])
+
+  async function handleAddCard(newCard: SentenceCardType) {
+    const { error } = await supabase.from('sentence-card').insert([newCard])
+
+      if(error){
+        console.error("保存失敗", error);
+      }
+
+      setSentenceCards([...sentenceCards, newCard]);
   };
 
   const handleDeleteCard = (targetCard: SentenceCardType) => {
