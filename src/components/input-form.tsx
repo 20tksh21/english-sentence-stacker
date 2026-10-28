@@ -4,24 +4,49 @@ import type { SentenceCardType } from "./sentence-card-type";
 //app.tsxから受け取るデータの型
 type InputFormProps = {
     onAddCard: (card: SentenceCardType) => void;
+    allTags: string[];
 };
 
-export default function InputForm({ onAddCard }: InputFormProps) {
+export default function InputForm({ onAddCard, allTags }: InputFormProps) {
     const [englishInput, setEnglishInput] = useState<string>("");
     const [japaneseInput, setJapaneseInput] = useState<string>("");
 
-    const handleAdd = () => {
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [tagInput, setTagInput] = useState<string>("");
+
+    //表示用の既存タグ＋追加したタグ    
+    const displayTags: string[] = Array.from(new Set([...allTags, ...selectedTags]));
+
+    const handleAddCard = () => {
         if (!englishInput.trim() && !japaneseInput.trim()) return;
 
         onAddCard({
             id: crypto.randomUUID(),
             english_sentence: englishInput,
             japanese_sentence: japaneseInput,
+            tags: selectedTags
         });
 
         setEnglishInput("");
         setJapaneseInput("");
+        setSelectedTags([]);
     };
+
+    const handleTagClick = (tag: string) => {
+        if (selectedTags.includes(tag)) {
+            setSelectedTags(selectedTags.filter((t) => t !== tag));
+        } else {
+            setSelectedTags([...selectedTags, tag]);
+        }
+    }
+
+    const handleAddTag = () => {
+        if(!tagInput) return;
+        if(!selectedTags.includes(tagInput)) {
+            setSelectedTags([...selectedTags, tagInput.trim()]);
+            setTagInput("");
+        }
+    }
 
     return (
         <div className="bg-gray-50 m-4 p-6 shadow rounded-lg">
@@ -42,10 +67,52 @@ export default function InputForm({ onAddCard }: InputFormProps) {
             ></textarea>
 
             <button
-                onClick={handleAdd}
+                onClick={handleAddCard}
                 className="text-white bg-green-600 px-4 py-2 rounded-md shadow hover:bg-green-800"
             >
                 追加する
+            </button>
+            <br/>
+
+
+            {/*既存のタグ一覧 */}
+            <p className="mt-6">タグ一覧</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+                {displayTags.map((tag) => { 
+                    const isSelected = selectedTags.includes(tag);
+                    return (
+                        <button
+                            type="button"
+                            key={tag}
+                            onClick={() => handleTagClick(tag)}
+                            className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                                isSelected
+                                    ? "bg-green-600 text-white border-green-600"
+                                    : "bg-white text-gray-700 border-gray-300 hover:border-green-600"
+                            }
+                            `}
+                        >
+                            {tag}
+                        </button>
+                    );
+                })}
+            </div>
+
+            {/*タグ入力フォーム */}
+            <input
+                type="text"
+                onChange={(e) => setTagInput(e.target.value)}
+                value={tagInput}
+                placeholder="新しいタグ名を入力..."
+                className="bg-white w-full mt-2 mb-6 p-2 border border-green-600 rounded-sm"
+            />
+
+            {/*タグ追加ボタン */}
+            <button
+                onClick={handleAddTag}
+                className="text-white bg-green-600 px-4 py-2 rounded-md shadow hover:bg-green-800"
+            >
+                タグを追加
             </button>
         </div>
     );
