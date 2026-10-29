@@ -5,14 +5,30 @@ import ToolTip from "./tool-tip"
 type SentenceCardProps = {
     card: SentenceCardType;
     onDelete: (card: SentenceCardType) => void;
-    onSpeak: (englishText: string) => void;
 }
 
-export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardProps) {
+export default function SentenceCard ({card, onDelete}: SentenceCardProps) {
+
+    //スピーカーボタンの処理
+    const handleEnglishSpeak = (englishText: string) => {
+        //もし音声が流れてたらまずキャンセル
+        window.speechSynthesis.cancel();
+
+        //読み上げ設定
+        //SpeechSynthesisUtterance→読み上げ設定を保持するインスタンス 
+        const utterance = new SpeechSynthesisUtterance(englishText);
+        utterance.lang = 'en-us';
+        utterance.rate = 1.0; //読み上げ速度
+        utterance.pitch = 1.0;  //声の高さ
+    
+        window.speechSynthesis.speak(utterance);
+    }
+
+    
 
     return(
         //カード外枠のdiv
-        <main className="bg-gray-50 m-4 p-5 border-2 border-green-600 shadow rounded-lg">
+        <div className="bg-gray-50 m-4 p-5 border-2 border-green-600 shadow rounded-lg">
             {/*本文エリアとタグエリアを縦に並べるdiv */}
             <div className="flex-col gap-4">
 
@@ -23,7 +39,7 @@ export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardPro
                     <div className="flex flex-col justify-between items-center">
                         {/*スピーカーボタン */}
                         <button
-                            onClick={() => onSpeak(card.english_sentence)}
+                            onClick={() => handleEnglishSpeak(card.english_sentence)}
                             className="relative group text-green-600 p-0.5 border-2 rounded-lg hover:text-green-300"
                         >
                             <Volume2 className="w-5 h-5"></Volume2>
@@ -64,15 +80,9 @@ export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardPro
                             </div>
                         )}
                     </div>
-
                 </div>
-
-
-
-
             </div>
-
-        </main>
+        </div>
     )
 
 }
