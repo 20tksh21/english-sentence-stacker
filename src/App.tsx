@@ -5,6 +5,7 @@ import type { SentenceCardType } from "./components/sentence-card-type";
 import SentenceCard from "./components/sentence-card";
 import TagBadges from "./components/tag-badges";
 import { Tag } from "lucide-react";
+import Header from "./components/Header";
 
 export default function App() {
 
@@ -78,33 +79,39 @@ export default function App() {
   }
 
   return (
-    <main className="text-gray-700 max-w-xl mx-auto p-4">
-      {/* 追加関数をInputFormに渡す */}
-      <InputForm onAddCard={handleAddCard} allTags={allTags} />
-
-      <p className="font-semibold p-4">タグで絞り込み</p>
-      <div className="flex gap-2 px-4">
-        <Tag/>
-        <TagBadges
-          tags={allTags}
-          selectedTags={searchSelectedTag}
-          onTagClick={handleSearchTagSelect}
-        />
-      </div>
+    <main>
+      <Header pageTitle="カード一覧"/>
+      <div className="text-gray-700 max-w-xl mx-auto p-4">
 
 
-      {/* カード一覧表示 */}
-      <div className="mt-6">
-        {filteredCards.map((card, index) => (
-          <SentenceCard
-            key={index}
-            card={card}
-            onDelete={handleDeleteCard}
-            onSpeak={handleEnglishSpeak}
+        {/* 追加関数をInputFormに渡す */}
+        <InputForm onAddCard={handleAddCard} allTags={allTags} />
+
+        <p className="font-semibold p-4">タグで絞り込み</p>
+        <div className="flex gap-2 px-4">
+          <Tag/>
+          <TagBadges
+            tags={allTags}
+            selectedTags={searchSelectedTag}
+            onTagClick={handleSearchTagSelect}
           />
-        ))}
+        </div>
+
+
+        {/* カード一覧表示 */}
+        <div className="mt-6">
+          {filteredCards.map((card, index) => (
+            <SentenceCard
+              key={index}
+              card={card}
+              onDelete={handleDeleteCard}
+              onSpeak={handleEnglishSpeak}
+            />
+          ))}
+        </div>
       </div>
     </main>
+
   );
 }
 
