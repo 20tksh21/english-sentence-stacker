@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { SentenceCardType } from "./sentence-card-type";
+import TagBadges from "./tag-badges";
 
 //app.tsxから受け取るデータの型
 type InputFormProps = {
@@ -32,7 +33,7 @@ export default function InputForm({ onAddCard, allTags }: InputFormProps) {
         setSelectedTags([]);
     };
 
-    const handleTagClick = (tag: string) => {
+    const handleInputTagSelect = (tag: string) => {
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter((t) => t !== tag));
         } else {
@@ -77,26 +78,11 @@ export default function InputForm({ onAddCard, allTags }: InputFormProps) {
 
             {/*既存のタグ一覧 */}
             <p className="mt-6">タグ一覧</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-                {displayTags.map((tag) => { 
-                    const isSelected = selectedTags.includes(tag);
-                    return (
-                        <button
-                            type="button"
-                            key={tag}
-                            onClick={() => handleTagClick(tag)}
-                            className={`px-3 py-1 text-sm rounded-full border transition-colors ${
-                                isSelected
-                                    ? "bg-green-600 text-white border-green-600"
-                                    : "bg-white text-gray-700 border-gray-300 hover:border-green-600"
-                            }
-                            `}
-                        >
-                            {tag}
-                        </button>
-                    );
-                })}
-            </div>
+            <TagBadges
+                tags={displayTags}
+                selectedTags={selectedTags} 
+                onTagClick={handleInputTagSelect}
+            />
 
             {/*タグ入力フォーム */}
             <input

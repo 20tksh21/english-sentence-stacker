@@ -3,11 +3,13 @@ import { supabase } from "./lib/supabase";
 import InputForm from "./components/input-form";
 import type { SentenceCardType } from "./components/sentence-card-type";
 import SentenceCard from "./components/sentence-card";
+import TagBadges from "./components/tag-badges";
+import { Tag } from "lucide-react";
 
 export default function App() {
 
-  const [sentenceCards, setSentenceCards] = useState<SentenceCardType[]>([
-  ]);
+  const [sentenceCards, setSentenceCards] = useState<SentenceCardType[]>([]);
+  const [searchSelectedTag, setSearchSelectedTag] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -26,6 +28,17 @@ export default function App() {
   const allTags = useMemo(() => {
     return Array.from(new Set(sentenceCards.flatMap((card) => card.tags)));
   }, [sentenceCards]);
+
+  const filteredCards = useMemo(() => {
+    if (searchSelectedTag.length === 0) return sentenceCards;
+
+    // 選択されたすべてのタグを網羅しているカードだけに絞り込む(AND検索)
+    return sentenceCards.filter((card) => 
+      card.tags && searchSelectedTag.every((tag) => card.tags.includes(tag))
+    );
+  }, [sentenceCards, searchSelectedTag]);
+
+
 
   async function handleAddCard(newCard: SentenceCardType) {
     const { error } = await supabase.from('sentence-card').insert([newCard])
@@ -56,14 +69,33 @@ export default function App() {
     window.speechSynthesis.speak(utterance);
   }
 
+  const handleSearchTagSelect = (tag: string) => {
+    if (!searchSelectedTag.includes(tag)) {
+      setSearchSelectedTag([...searchSelectedTag, tag]);
+    } else {
+      setSearchSelectedTag(searchSelectedTag.filter((t) => t !== tag));
+    }
+  }
+
   return (
     <main className="text-gray-700 max-w-xl mx-auto p-4">
       {/* 追加関数をInputFormに渡す */}
       <InputForm onAddCard={handleAddCard} allTags={allTags} />
 
+      <p className="font-semibold p-4">タグで絞り込み</p>
+      <div className="flex gap-2 px-4">
+        <Tag/>
+        <TagBadges
+          tags={allTags}
+          selectedTags={searchSelectedTag}
+          onTagClick={handleSearchTagSelect}
+        />
+      </div>
+
+
       {/* カード一覧表示 */}
       <div className="mt-6">
-        {sentenceCards.map((card, index) => (
+        {filteredCards.map((card, index) => (
           <SentenceCard
             key={index}
             card={card}

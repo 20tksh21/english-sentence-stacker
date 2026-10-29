@@ -56,7 +56,7 @@ export default function SentenceCard ({card, onDelete, onSpeak}: SentenceCardPro
                                 {card.tags.map((tag) => (
                                     <span
                                         key={tag}
-                                        className="px-3 py-0.5 text-xs rounded-full border border-green-600 text-green-700 bg-white"
+                                        className="px-3 py-0.5 text-xs rounded-full border bg-white text-gray-700 border-gray-300"
                                     >
                                         {tag}
                                     </span>
