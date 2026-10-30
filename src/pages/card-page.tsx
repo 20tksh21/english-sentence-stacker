@@ -7,10 +7,9 @@ import SentenceCard from "../components/sentence-card";
 type CardPageProps = {
     sentenceCards: SentenceCardType[];
     allTags: string[];
-    onDelete: (card: SentenceCardType) => void;
 }
 
-export default function CardPage({sentenceCards, allTags, onDelete}: CardPageProps) {
+export default function CardPage({sentenceCards, allTags}: CardPageProps) {
 
     const [searchSelectedTag, setSearchSelectedTag] = useState<string[]>([]);
 
@@ -55,7 +54,6 @@ export default function CardPage({sentenceCards, allTags, onDelete}: CardPagePro
                 <SentenceCard
                 key={card.id}
                 card={card}
-                onDelete={onDelete}
                 />
             ))}
             </div>

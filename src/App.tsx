@@ -8,7 +8,7 @@ export default function App() {
   const {
     sentenceCards, 
     allTags,
-    handleAddCard, handleDeleteCard
+    handleAddCard, handleDeleteCard, handleUpdateCard
   } = useCardData();
 
   return(
@@ -18,8 +18,13 @@ export default function App() {
 
       <main className="">
         <Routes>
-          <Route path="/" element={<CardPage sentenceCards={sentenceCards} allTags={allTags} onDelete={handleDeleteCard} />} />
-          <Route path="/input-page" element={<InputPage allTags={allTags} onAddCard={handleAddCard} />} />
+          <Route path="/" element={<CardPage sentenceCards={sentenceCards} allTags={allTags}/>} />
+          <Route
+            path="/input-page"
+            element={<InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>} />
+          <Route
+            path="/edit-page/:id" 
+            element={<InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>}/>
         </Routes>
       </main>
     </BrowserRouter>

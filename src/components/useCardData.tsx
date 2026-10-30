@@ -47,11 +47,27 @@ export default function useCardData() {
         setSentenceCards(sentenceCards.filter((card) => card.id !== targetCard.id))
     }
 
+    async function handleUpdateCard(updatedCard: SentenceCardType) {
+        const { error } = await supabase
+            .from('sentence-card')
+            .update({
+                english_sentence: updatedCard.english_sentence,
+                japanese_sentence: updatedCard.japanese_sentence,
+                tags: updatedCard.tags
+            })
+            .eq('id', updatedCard.id)
+
+        if(error) {
+            console.error('更新失敗', error);
+        }
+
+        setSentenceCards(sentenceCards.map((card) => card.id === updatedCard.id ? updatedCard : card));
+    }
+
 
     return {
         sentenceCards, setSentenceCards,
         allTags,
-        handleAddCard, handleDeleteCard
-
+        handleAddCard, handleDeleteCard, handleUpdateCard
     }
 }

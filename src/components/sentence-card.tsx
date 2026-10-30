@@ -1,13 +1,13 @@
 import type { SentenceCardType } from "./sentence-card-type"
-import { Volume2, Trash } from "lucide-react"
+import { Link } from "react-router-dom"
+import { Volume2, Settings } from "lucide-react"
 import ToolTip from "./tool-tip"
 
 type SentenceCardProps = {
     card: SentenceCardType;
-    onDelete: (card: SentenceCardType) => void;
 }
 
-export default function SentenceCard ({card, onDelete}: SentenceCardProps) {
+export default function SentenceCard ({card}: SentenceCardProps) {
 
     //スピーカーボタンの処理
     const handleEnglishSpeak = (englishText: string) => {
@@ -30,7 +30,7 @@ export default function SentenceCard ({card, onDelete}: SentenceCardProps) {
         //カード外枠のdiv
         <div className="bg-gray-50 m-4 p-5 border-2 border-green-600 shadow rounded-lg">
             {/*本文エリアとタグエリアを縦に並べるdiv */}
-            <div className="flex-col gap-4">
+            <div className="flex flex-col gap-4">
 
                 {/*本文行のボタン部分と文章部分を横に並べるdiv */}
                 <div className="flex gap-4">
@@ -47,14 +47,12 @@ export default function SentenceCard ({card, onDelete}: SentenceCardProps) {
                         </button>
 
 
-                        {/*削除ボタン */}
-                        <button
-                            onClick={() => onDelete(card)}
-                            className="relative group mt-4 mb-1 hover:text-gray-400"
+                        {/*編集画面遷移ボタン */}
+                        <Link
+                            to={`/edit-page/${card.id}`}
                         >
-                            <Trash></Trash>
-                            <ToolTip text="削除"></ToolTip>
-                        </button>
+                            <Settings className="hover:text-gray-400"></Settings>
+                        </Link>
 
                     </div>
 
