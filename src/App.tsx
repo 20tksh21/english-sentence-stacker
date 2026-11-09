@@ -3,8 +3,12 @@ import CardPage from "./pages/card-page"
 import InputPage from "./pages/input-page"
 import Header from "./components/Header"
 import useCardData from "./components/useCardData"
+import AuthPage from "./pages/auth-page"
+import ProtectedRoute from "./components/protected-route"
+import { AuthProvider } from "./contexts/AuthContext"
 
-export default function App() {
+// 認証情報のコンテキスト内で動作させるため本体を分離
+function AppContent() {
   const {
     sentenceCards, 
     allTags,
@@ -18,13 +22,36 @@ export default function App() {
 
       <main className="">
         <Routes>
-          <Route path="/" element={<CardPage sentenceCards={sentenceCards} allTags={allTags}/>} />
+          {/* 未ログインでもアクセス可能な認証ページルート */}
+          <Route path="/auth" element={<AuthPage />} />
+
+          {/* ProtectedRouteでラップしてログイン必須化 */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <CardPage sentenceCards={sentenceCards} allTags={allTags}/>
+              </ProtectedRoute>
+            }
+          />
+          {/* ProtectedRouteでラップしてログイン必須化 */}
           <Route
             path="/input-page"
-            element={<InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>} />
+            element={
+              <ProtectedRoute>
+                <InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>
+              </ProtectedRoute>
+            }
+          />
+          {/* ProtectedRouteでラップしてログイン必須化 */}
           <Route
             path="/edit-page/:id" 
-            element={<InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>}/>
+            element={
+              <ProtectedRoute>
+                <InputPage allCards={sentenceCards} allTags={allTags} onAddCard={handleAddCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard}/>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </BrowserRouter>
@@ -32,4 +59,11 @@ export default function App() {
 
 }
 
-
+// アプリ全体をAuthProviderでラップ
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}

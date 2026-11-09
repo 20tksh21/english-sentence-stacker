@@ -3,4 +3,5 @@ export type SentenceCardType = {
     english_sentence: string;
     japanese_sentence: string;
     tags: string[];
+    user_id?: string;
 }
