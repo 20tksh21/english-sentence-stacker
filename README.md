@@ -1,32 +1,28 @@
-# React + TypeScript + Vite
+# サービス名
+【英文スタッカー】
+英語の重要表現を含んだ例文などを効率的に記録・復習できるアプリです。
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## URL
+https://english-sentence-stacker.vercel.app
 
-Currently, two official plugins are available:
+## 開発背景
+自分が英語を学習していて、「文法を覚えるには、重要表現を含んだ英文を何度も読むのがいい」と思った。
+しかし既存のメモアプリではフォーマット化されていないので効率が悪く、また一緒に音声も聞けるとよりいいと思い、このアプリを作ることにした。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 主な機能
+- ユーザー認証（新規登録・ログイン・ログアウト）
+- 例文カードの作成・編集・削除機能
+- タグで絞り込み検索機能
+- web音声読み上げを使用した例文音声
 
-## React Compiler
+## 使用技術
+- フロントエンド: React, TypeScript, Tailwind CSS
+- データベース: Supabase
+- ホスティング: Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 工夫した点
 
-## Expanding the Oxlint configuration
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## 今後実装したい機能
+- ランダム表示によるテスト機能
+- ページネーション
