@@ -1,6 +1,7 @@
+import { useState } from "react"
 import type { SentenceCardType } from "./sentence-card-type"
 import { Link } from "react-router-dom"
-import { Volume2, Settings } from "lucide-react"
+import { Volume2, Settings, ChevronDown, ChevronUp } from "lucide-react"
 import ToolTip from "./tool-tip"
 
 type SentenceCardProps = {
@@ -8,6 +9,7 @@ type SentenceCardProps = {
 }
 
 export default function SentenceCard ({card}: SentenceCardProps) {
+    const [isOpen, setIsOpen] = useState<boolean>(true)
 
     //スピーカーボタンの処理
     const handleEnglishSpeak = (englishText: string) => {
@@ -59,9 +61,29 @@ export default function SentenceCard ({card}: SentenceCardProps) {
                     {/*英文、和訳、タグを縦に並べるdiv */}
                     <div className="flex-col">
                         {/*英文＆和訳カラム */}
-                        <div>
+                        <div>  
                             <p className="font-semibold text-lg">{card.english_sentence}</p>
-                            <p className="text-gray-600 text-sm mt-6">{card.japanese_sentence}</p>
+                            {/* 3. 折りたたみボタン */}
+                            <button
+                                type="button"
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="flex items-center gap-1 text-sm text-gray-500 hover:text-green-600 mt-3 transition-colors cursor-pointer"
+                            >
+                                {isOpen ? (
+                                    <>
+                                        <ChevronUp className="w-4 h-4" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <ChevronDown className="w-4 h-4" />
+                                        <span>和訳を表示</span>
+                                    </>
+                                )}
+                            </button>
+                            {/* isOpen が true のときだけ表示 */}
+                            {isOpen && (
+                                <p className="text-gray-600 text-sm mt-2">{card.japanese_sentence}</p>
+                            )}
                         </div>
 
                         {/*タグエリア */}
